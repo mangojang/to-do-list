@@ -1,6 +1,7 @@
 import { Route, Routes, Outlet } from "react-router-dom";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import Todo from "./Todo";
 
 const errorPage = ()=>{
   return(
@@ -15,6 +16,7 @@ function App() {
         <Route exact path="/" element={<SignIn/>} />
         <Route path="/signin" element={<SignIn/>} />
         <Route path="/signup" element={<SignUp/>} />
+        <Route path="/todo" element={<Todo/>} />
         <Route path="/*"  Component={errorPage} />
     </Routes>
   );
