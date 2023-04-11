@@ -18,7 +18,7 @@ const SignUp =()=>{
     useEffect(()=>{
         const token = localStorage.getItem('todo');
         if(token){
-            navigate('/todo');
+            navigate('/todo', {replace: true});
         }
     },[])
 

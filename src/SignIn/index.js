@@ -19,7 +19,7 @@ const SignIn =()=>{
     useEffect(()=>{
         const token = localStorage.getItem('todo');
         if(token){
-            navigate('/todo');
+            navigate('/todo', {replace: true});
         }
     },[])
 
@@ -68,7 +68,7 @@ const SignIn =()=>{
             const token = response.data.access_token;
             localStorage.setItem("todo", token);
             alert('로그인이 성공하였습니다.');
-            navigate('/todo', { replace: true });
+            navigate('/todo');
         })
         .catch(error=>{
             console.log('에러', error);
