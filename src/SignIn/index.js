@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button, FormBox, FormInputRow, Layout } from "./style";
 
 
@@ -19,7 +20,7 @@ const SignIn =()=>{
                     </FormInputRow>
                     <div className="btns_box">
                         <Button type={"button"} styletype="default" data-testid="signin-button">로그인</Button>
-                        <Button type={"button"} styletype="white">회원가입</Button>
+                        <Link to={"/signup"}><Button type={"button"} styletype="white">회원가입</Button></Link>
                     </div>
                 </form>
             </div>
