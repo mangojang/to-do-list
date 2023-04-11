@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FormLayout from "../FormLayout";
 import { Button, FormInputRow } from "../Styles";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,13 @@ const SignUp =()=>{
     const [emailError, setEmailError] = useState(true);
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState(true);
+
+    useEffect(()=>{
+        const token = localStorage.getItem('todo');
+        if(token){
+            navigate('/todo');
+        }
+    },[])
 
     const onChangeEmail = useCallback((e)=>{
         let value = e.target.value;
