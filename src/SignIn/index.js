@@ -1,9 +1,82 @@
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FormLayout from "../FormLayout";
 import { Button, FormInputRow } from "../Styles";
+import { useNavigate } from "react-router-dom";
 
+// const backURL = "https://www.pre-onboarding-selection-task.shop";
+const backURL = "http://localhost:8000";
 
 const SignIn =()=>{
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState(true);
+    const [password, setPassword] = useState('');
+    const [passwordError, setPasswordError] = useState(true);
+
+    useEffect(()=>{
+        const token = localStorage.getItem('todo');
+        if(token){
+            navigate('/todo');
+        }
+    },[])
+
+    const onChangeEmail = useCallback((e)=>{
+        let value = e.target.value;
+
+        const emailRegex= /^\S+@\S+\.\S+$/;
+
+        if(emailRegex.test(value)){
+            setEmailError(false);
+        }else{
+            setEmailError(true);
+        }
+
+        setEmail(value);
+
+    },[]);
+
+    const onChangePassword = useCallback((e)=>{
+        let value = e.target.value;
+
+        if(value){
+            if(value.trim().length >=8){
+                setPasswordError(false);
+            }else{
+                setPasswordError(true);
+            }
+        }else{
+            setPasswordError(true);
+        }
+
+        setPassword(value);
+
+    },[]);
+    
+    const onSubmit = useCallback((e)=>{
+        e.preventDefault();
+        const data = {
+            email,
+            password
+        }
+
+        axios.post(`${backURL}/auth/signin`, data)
+        .then(response=>{
+            console.log('응답', response);
+            const token = response.data.access_token;
+            localStorage.setItem("todo", token);
+            alert('로그인이 성공하였습니다.');
+            navigate('/todo', { replace: true });
+        })
+        .catch(error=>{
+            console.log('에러', error);
+            alert('잠시후 다시 시도해 주세요.')
+        })
+
+        
+    },[email, password]);
 
     return (
         <FormLayout>
@@ -12,14 +85,14 @@ const SignIn =()=>{
                  <form>
                      <FormInputRow>
                          <label htmlFor="email">이메일</label>
-                         <input type={"text"} id="email" placeholder="이메일을 입력해주세요" data-testid="email-input"/>
+                         <input type={"text"} id="email" placeholder="이메일을 입력해주세요" data-testid="email-input" onChange={onChangeEmail}/>
                      </FormInputRow>
                      <FormInputRow>
                          <label htmlFor="password">비밀번호</label>
-                         <input type={"password"} id="password" placeholder="비밀번호를 입력해주세요" data-testid="password-input"/>
+                         <input type={"password"} id="password" placeholder="비밀번호를 입력해주세요" data-testid="password-input" onChange={onChangePassword}/>
                      </FormInputRow>
                      <div className="btns_box">
-                         <Button type={"button"} styletype="default" data-testid="signin-button">로그인</Button>
+                         <Button type={"button"} styletype="default" data-testid="signin-button" onClick={onSubmit} disabled={emailError || passwordError ? true : false}>로그인</Button>
                          <Link to={"/signup"}><Button type={"button"} styletype="white">회원가입</Button></Link>
                      </div>
                  </form>
