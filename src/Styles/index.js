@@ -22,6 +22,10 @@ export const Button = styled.button`
     padding: 8px 20px;
     border-radius: 8px;
     cursor: pointer;
+    &:disabled{
+        cursor: default;
+        opacity: .4;
+    }
     ${(props)=>{
         switch (props.styletype) {
         case "white":
