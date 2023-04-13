@@ -65,14 +65,15 @@ const TodoList =({ data, actions}) =>{
 
     const onToggleEdit = useCallback((e)=>{
         e.preventDefault();
+        setTodo(data.todo);
         setIsEdit((prev=>!prev));
-    },[])
+    },[data.todo])
 
     const onClickCancle = useCallback((e)=>{
         e.preventDefault();
         setIsEdit((prev=>!prev));
         setTodo(data.todo);
-    },[])
+    },[data.todo])
 
     return (
         <List>
