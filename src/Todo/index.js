@@ -63,7 +63,7 @@ const Todo = ()=>{
                     <TodoInput actions={actions}/>
                 </div>
                 <div className="box_bottom">
-                    {todos&&todos.map((v)=>(<TodoList data={v} actions={actions}/>))}
+                    {todos&&todos.map((v,i)=>(<TodoList data={v} key={i} actions={actions}/>))}
                 </div>
             </div>
         </AppLayout>
