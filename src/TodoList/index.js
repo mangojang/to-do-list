@@ -7,7 +7,6 @@ import { List } from "./style";
 const TodoList =({ data, actions}) =>{
     const [isEdit, setIsEdit] = useState(false);
     const [todo, setTodo] = useState(data.todo);
-    const [isCompleted, setIsCompleted] = useState(data.isCompleted);
 
     const onClickDelete = useCallback((e)=>{
         const id = Number(e.target.value);
@@ -30,9 +29,9 @@ const TodoList =({ data, actions}) =>{
         })
     },[]);
 
-    const onClickUpdate = useCallback((e)=>{
+    const onSubmit = useCallback((e)=>{
         e.preventDefault();
-        const id = Number(e.target.value);
+        const id = Number(e.target.id);
 
         const accessToken = localStorage.getItem('todo');
 
@@ -42,14 +41,13 @@ const TodoList =({ data, actions}) =>{
             }
         }
 
-        const data ={
+        const sendData ={
             todo,
-            isCompleted
+            isCompleted : data.isCompleted
         }
 
-        axios.put(`${backURL}/todos/${id}`,data, config)
+        axios.put(`${backURL}/todos/${id}`,sendData, config)
         .then(response=>{
-            console.log('rep',response);
             actions.update(response.data);
             setIsEdit((prev=>!prev));
         })
@@ -57,7 +55,7 @@ const TodoList =({ data, actions}) =>{
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
         })
-    },[todo, isCompleted])
+    },[todo, data.isCompleted])
 
     const onCheckUpdate = useCallback((e)=>{
         const id = Number(e.target.id);
@@ -70,21 +68,20 @@ const TodoList =({ data, actions}) =>{
             }
         }
 
-        const data ={
+        const sendData ={
             todo,
-            isCompleted : !isCompleted
+            isCompleted : !data.isCompleted
         }
 
-        axios.put(`${backURL}/todos/${id}`,data, config)
+        axios.put(`${backURL}/todos/${id}`,sendData, config)
         .then(response=>{
             actions.update(response.data);
-            setIsCompleted((prev=>!prev));
         })
         .catch(error=>{
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
         })
-    },[todo, isCompleted])
+    },[todo, data.isCompleted])
 
     const onChangeInput = useCallback((e)=>{
         setTodo(e.target.value);
@@ -103,10 +100,10 @@ const TodoList =({ data, actions}) =>{
 
     return (
         <List>
-            <form>
+            <form id={data.id} onSubmit={onSubmit}>
                 <div className="inner">
                     <label>
-                        <CheckBox type="checkbox" id={data.id} checked={isCompleted} onChange={onCheckUpdate}/>
+                        <CheckBox type="checkbox" id={data.id} checked={data.isCompleted} onChange={onCheckUpdate}/>
                         {isEdit
                             ?<Input type={'text'} value={todo} data-testid="modify-input" onChange={onChangeInput} />
                             :<span>{data.todo}</span>
@@ -114,7 +111,7 @@ const TodoList =({ data, actions}) =>{
                     </label>
                         {isEdit
                             ?<>
-                                <Button type="button" styletype='small' data-testid="submit-button" value={data.id} onClick={onClickUpdate}>제출</Button>
+                                <Button type="submit" styletype='small' data-testid="submit-button">제출</Button>
                                 <Button type="button" styletype='small_white' data-testid="cancel-button" onClick={onClickCancle}>취소</Button>
                             </>
                             :<>
