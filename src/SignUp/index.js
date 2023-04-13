@@ -67,7 +67,7 @@ const SignUp =()=>{
         })
         .catch(error=>{
             console.log('에러', error);
-            alert('잠시후 다시 시도해 주세요.')
+            alert(error.response.data.message)
         })
 
         
