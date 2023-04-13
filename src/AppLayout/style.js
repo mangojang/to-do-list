@@ -48,5 +48,7 @@ export const TodoBox = styled.div`
         margin-bottom: 10px;
     }
     .box_bottom{
+        max-height: 300px;
+        overflow-y: auto;
     }
 `;
