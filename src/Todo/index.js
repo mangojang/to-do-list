@@ -23,7 +23,6 @@ const Todo = ()=>{
 
             axios.get(`${backURL}/todos`,config)
             .then(response=>{
-                console.log('성공',response.data);
                 setTodos(response.data);
                 
             })
