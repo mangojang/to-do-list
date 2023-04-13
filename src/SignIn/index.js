@@ -82,7 +82,7 @@ const SignIn =()=>{
         <FormLayout>
             <div className="inner">
                  <h1>로그인</h1>
-                 <form>
+                 <form onSubmit={onSubmit}>
                      <FormInputRow>
                          <label htmlFor="email">이메일</label>
                          <input type={"text"} id="email" placeholder="이메일을 입력해주세요" data-testid="email-input" onChange={onChangeEmail}/>
@@ -92,7 +92,7 @@ const SignIn =()=>{
                          <input type={"password"} id="password" placeholder="비밀번호를 입력해주세요" data-testid="password-input" onChange={onChangePassword}/>
                      </FormInputRow>
                      <div className="btns_box">
-                         <Button type={"button"} styletype="default" data-testid="signin-button" onClick={onSubmit} disabled={emailError || passwordError ? true : false}>로그인</Button>
+                         <Button type={"submit"} styletype="default" data-testid="signin-button" disabled={emailError || passwordError ? true : false}>로그인</Button>
                          <Link to={"/signup"}><Button type={"button"} styletype="white">회원가입</Button></Link>
                      </div>
                  </form>
