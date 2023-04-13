@@ -11,15 +11,7 @@ const TodoList =({ data, actions}) =>{
     const onClickDelete = useCallback((e)=>{
         const id = Number(e.target.value);
 
-        const accessToken = localStorage.getItem('todo');
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        }
-
-        axios.delete(`${backURL}/todos/${id}`,config)
+        axios.delete(`${backURL}/todos/${id}`)
         .then(response=>{
             actions.delete(id);
         })
@@ -33,20 +25,12 @@ const TodoList =({ data, actions}) =>{
         e.preventDefault();
         const id = Number(e.target.id);
 
-        const accessToken = localStorage.getItem('todo');
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        }
-
         const sendData ={
             todo,
             isCompleted : data.isCompleted
         }
 
-        axios.put(`${backURL}/todos/${id}`,sendData, config)
+        axios.put(`${backURL}/todos/${id}`,sendData)
         .then(response=>{
             actions.update(response.data);
             setIsEdit((prev=>!prev));
@@ -60,20 +44,12 @@ const TodoList =({ data, actions}) =>{
     const onCheckUpdate = useCallback((e)=>{
         const id = Number(e.target.id);
 
-        const accessToken = localStorage.getItem('todo');
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        }
-
         const sendData ={
             todo,
             isCompleted : !data.isCompleted
         }
 
-        axios.put(`${backURL}/todos/${id}`,sendData, config)
+        axios.put(`${backURL}/todos/${id}`,sendData)
         .then(response=>{
             actions.update(response.data);
         })

@@ -1,10 +1,18 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../AppLayout";
 import { backURL } from "../config";
 import TodoInput from "../TodoInput";
 import TodoList from "../TodoList";
+
+axios.interceptors.request.use(function (config) {
+    config.headers.Authorization = `Bearer ${localStorage.getItem('todo')}`
+    return config
+  }, function (error) {
+    return Promise.reject(error)
+})
+  
 
 const Todo = ()=>{
     const navigate = useNavigate();
@@ -15,13 +23,7 @@ const Todo = ()=>{
         const accessToken = localStorage.getItem('todo');
         if(accessToken){
 
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            }
-
-            axios.get(`${backURL}/todos`,config)
+            axios.get(`${backURL}/todos`)
             .then(response=>{
                 setTodos(response.data);
                 
