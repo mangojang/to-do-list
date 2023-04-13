@@ -95,6 +95,12 @@ const TodoList =({ data, actions}) =>{
         setIsEdit((prev=>!prev));
     },[])
 
+    const onClickCancle = useCallback((e)=>{
+        e.preventDefault();
+        setIsEdit((prev=>!prev));
+        setTodo(data.todo);
+    },[])
+
     return (
         <List>
             <form>
@@ -108,8 +114,8 @@ const TodoList =({ data, actions}) =>{
                     </label>
                         {isEdit
                             ?<>
-                                <Button type="submit" styletype='small' data-testid="submit-button" value={data.id} onClick={onClickUpdate}>제출</Button>
-                                <Button type="button" styletype='small_white' data-testid="cancel-button">취소</Button>
+                                <Button type="button" styletype='small' data-testid="submit-button" value={data.id} onClick={onClickUpdate}>제출</Button>
+                                <Button type="button" styletype='small_white' data-testid="cancel-button" onClick={onClickCancle}>취소</Button>
                             </>
                             :<>
                                 <Button type="button" styletype='small' data-testid="modify-button" onClick={onToggleEdit}>수정</Button>
