@@ -30,3 +30,24 @@ export const FormBox = styled.div`
         }
     }
 `;
+
+export const TodoBox = styled.div`
+     padding:  30px 60px;
+    border-radius: 40px;
+    border: 1px solid #d9d9d9;
+    h1{
+        font-size: 60px;
+        line-height: 1.2;
+        text-align: center;
+        margin:30px 0;
+
+    }
+    .box_top{
+        padding: 16px 20px;
+        border-radius: 16px;
+        border: 1px solid #d9d9d9;
+        margin-bottom: 10px;
+    }
+    .box_bottom{
+    }
+`;

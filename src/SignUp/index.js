@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import FormLayout from "../FormLayout";
+import AppLayout from "../AppLayout";
 import { Button, FormInputRow } from "../Styles";
 import { useNavigate } from "react-router-dom";
 
@@ -77,7 +77,7 @@ const SignUp =()=>{
     
 
     return (
-        <FormLayout>
+        <AppLayout type={"form"}>
             <div className="inner">
                 <h1>회원가입</h1>
                 <form onSubmit={onSubmit}>
@@ -94,7 +94,7 @@ const SignUp =()=>{
                     </div>
                 </form>
             </div>
-        </FormLayout>
+        </AppLayout>
     );
 };
 
