@@ -6,9 +6,6 @@ import { Button, FormInputRow, Input } from "../Styles";
 import { useNavigate } from "react-router-dom";
 import { backURL } from "../config";
 
-// const backURL = "https://www.pre-onboarding-selection-task.shop";
-// const backURL = "http://localhost:8000";
-
 const SignIn =()=>{
     const navigate = useNavigate();
 
@@ -65,10 +62,8 @@ const SignIn =()=>{
 
         axios.post(`${backURL}/auth/signin`, data)
         .then(response=>{
-            console.log('응답', response);
             const token = response.data.access_token;
             localStorage.setItem("todo", token);
-            alert('로그인이 성공하였습니다.');
             navigate('/todo');
         })
         .catch(error=>{
