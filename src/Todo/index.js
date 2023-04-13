@@ -48,6 +48,11 @@ const Todo = ()=>{
                 return prev.filter((item) => item.id !== Number(id));
             });
         },
+        update(data){
+            setTodos((prev)=>{
+                return prev.map((item) => item.id === data.id ? data : item)
+            })
+        }
     }
 
     return(
