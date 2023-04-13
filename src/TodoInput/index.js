@@ -4,7 +4,7 @@ import { backURL } from "../config";
 import { Button, Input } from "../Styles";
 import { Conatainer, Row } from "./style";
 
-const TodoInput = (props)=>{
+const TodoInput = ({actions})=>{
     const [todo, setTodo] = useState('');
 
     const onChangeTodo = useCallback((e)=>{
@@ -16,15 +16,23 @@ const TodoInput = (props)=>{
         const data = {
             todo
         }
+        const accessToken = localStorage.getItem('todo');
 
-        axios.post(`${backURL}/todos`, data, props.config)
+        const config = {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }
+
+        axios.post(`${backURL}/todos`, data, config)
         .then(response=>{
+            actions.add(response.data);
             setTodo('');
-            props.addTodo(response.data);
         })
         .catch(error=>{
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
+            setTodo('');
         })
     },[todo])
 
