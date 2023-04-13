@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
+export const Input = styled.input`
+    min-width: 300px;
+    height: 30px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    padding: 0 6px;
+`;
+
 export const FormInputRow = styled.div`
     margin-bottom: 16px;
-    input{
-        min-width: 300px;
-        height: 30px;
-        border: 1px solid #d1d1d1;
-        border-radius: 4px;
-        padding: 0 6px;
-    }
     label{
         display: inline-block;
         min-width: 100px;

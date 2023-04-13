@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import AppLayout from "../AppLayout";
-import { Button, FormInputRow } from "../Styles";
+import { Button, FormInputRow, Input } from "../Styles";
 import { useNavigate } from "react-router-dom";
 
 // const backURL = "https://www.pre-onboarding-selection-task.shop";
@@ -83,11 +83,11 @@ const SignUp =()=>{
                 <form onSubmit={onSubmit}>
                     <FormInputRow>
                         <label htmlFor="email">이메일</label>
-                        <input type={"text"} id="email" placeholder="이메일을 입력해주세요" data-testid="email-input" onChange={onChangeEmail}/>
+                        <Input type={"text"} id="email" placeholder="이메일을 입력해주세요" data-testid="email-input" onChange={onChangeEmail}/>
                     </FormInputRow>
                     <FormInputRow>
                         <label htmlFor="password">비밀번호</label>
-                        <input type={"password"} id="password" placeholder="비밀번호를 입력해주세요" data-testid="password-input" onChange={onChangePassword}/>
+                        <Input type={"password"} id="password" placeholder="비밀번호를 입력해주세요" data-testid="password-input" onChange={onChangePassword}/>
                     </FormInputRow>
                     <div className="btns_box">
                         <Button type={"submit"} styletype="default" data-testid="signup-button" disabled={emailError || passwordError ? true : false}>회원가입</Button>
