@@ -43,9 +43,8 @@ export const TodoBox = styled.div`
 
     }
     .box_top{
-        padding: 16px 20px;
-        border-radius: 16px;
-        border: 1px solid #d9d9d9;
+        display: flex;
+        justify-content: center;
         margin-bottom: 10px;
     }
     .box_bottom{

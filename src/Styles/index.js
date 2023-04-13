@@ -8,6 +8,11 @@ export const Input = styled.input`
     padding: 0 6px;
 `;
 
+export const CheckBox = styled.input`
+    width: 28px;
+    height: 28px;
+`;
+
 export const FormInputRow = styled.div`
     margin-bottom: 16px;
     label{
@@ -31,6 +36,20 @@ export const Button = styled.button`
         switch (props.styletype) {
         case "white":
             return `
+                background-color: white;
+                border: 1px solid #d9d9d9;
+                color: black; 
+            `;
+        case "small":
+            return `
+                padding: 6px 16px;
+                background-color: black;
+                border: 1px solid black;
+                color: white;
+            `;
+        case "small_white":
+            return `
+                padding: 6px 16px;
                 background-color: white;
                 border: 1px solid #d9d9d9;
                 color: black; 
