@@ -6,7 +6,6 @@ import { Conatainer, Row } from "./style";
 
 const TodoInput = (props)=>{
     const [todo, setTodo] = useState('');
-    console.log('props',props);
 
     const onChangeTodo = useCallback((e)=>{
         setTodo(e.target.value);
@@ -17,14 +16,11 @@ const TodoInput = (props)=>{
         const data = {
             todo
         }
-        
 
         axios.post(`${backURL}/todos`, data, props.config)
         .then(response=>{
-            console.log('성공',response.data);
-            //1. setTodo('');
             setTodo('');
-            //2. 받은 값 state 추가  -> 상위 컴포넌트에서 함수 끌어다 쓰기
+            props.addTodo(response.data);
         })
         .catch(error=>{
             console.log('에러', error);
