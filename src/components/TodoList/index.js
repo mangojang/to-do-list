@@ -18,7 +18,7 @@ const TodoList =({ data, actions}) =>{
             alert('잠시후 다시 시도해 주세요.')
         }
        
-    },[]);
+    },[actions]);
 
     const onSubmit = useCallback(async(e)=>{
         e.preventDefault();
@@ -37,7 +37,7 @@ const TodoList =({ data, actions}) =>{
             alert('잠시후 다시 시도해 주세요.')
         }
         
-    },[todo, data.isCompleted])
+    },[todo, data.isCompleted, actions])
 
     const onCheckUpdate = useCallback(async(e)=>{
         const id = Number(e.target.id);
@@ -55,7 +55,7 @@ const TodoList =({ data, actions}) =>{
             alert('잠시후 다시 시도해 주세요.')
         }
 
-    },[todo, data.isCompleted])
+    },[todo, data.isCompleted, actions])
 
     const onChangeInput = useCallback((e)=>{
         setTodo(e.target.value);

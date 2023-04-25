@@ -19,7 +19,7 @@ const SignIn =()=>{
         if(token){
             navigate('/todo', {replace: true});
         }
-    },[])
+    },[navigate])
 
     const onChangeEmail = useCallback((e)=>{
         let value = e.target.value;
@@ -70,7 +70,7 @@ const SignIn =()=>{
             alert('잠시후 다시 시도해 주세요.')
         }
 
-    },[email, password]);
+    },[email, password, navigate]);
 
     return (
         <AppLayout type={"form"}>

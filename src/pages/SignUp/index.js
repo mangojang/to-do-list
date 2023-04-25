@@ -18,7 +18,7 @@ const SignUp =()=>{
         if(token){
             navigate('/todo', {replace: true});
         }
-    },[])
+    },[navigate])
 
     const onChangeEmail = useCallback((e)=>{
         let value = e.target.value;
@@ -70,7 +70,7 @@ const SignUp =()=>{
             alert(error.response.data.message)
         }
         
-    },[email, password]);
+    },[email, password, navigate]);
     
 
     return (

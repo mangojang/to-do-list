@@ -12,7 +12,7 @@ const Main =()=>{
         }else{
             navigate('signin', {replace: true})
         }
-    },[])
+    },[navigate])
 
 }
 

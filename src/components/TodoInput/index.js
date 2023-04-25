@@ -25,31 +25,8 @@ const TodoInput = ({actions})=>{
             alert('잠시후 다시 시도해 주세요.')
             setTodo('');
         }
-    },[todo])
+    },[todo, actions])
     
-    // const onSubmit = useCallback((e)=>{
-    //     e.preventDefault();
-        
-    //     const accessToken = localStorage.getItem('todo');
-
-    //     const config = {
-    //         headers: {
-    //             Authorization: `Bearer ${accessToken}`
-    //         }
-    //     }
-
-    //     axios.post(`${backURL}/todos`, data, config)
-    //     .then(response=>{
-    //         actions.add(response.data);
-    //         setTodo('');
-    //     })
-    //     .catch(error=>{
-    //         console.log('에러', error);
-    //         alert('잠시후 다시 시도해 주세요.')
-    //         setTodo('');
-    //     })
-    // },[todo])
-
     return(
         <Conatainer>
             <form onSubmit={onSubmit}>

@@ -38,7 +38,7 @@ const Todo = ()=>{
             navigate('/signin', {replace: true});
         }
         
-    },[])
+    },[getTodos, navigate])
 
     const actions = {
         add(data){
