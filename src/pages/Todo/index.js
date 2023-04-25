@@ -5,13 +5,6 @@ import AppLayout from "../../components/AppLayout";
 import { backURL } from "../../config";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
-
-axios.interceptors.request.use(function (config) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('todo')}`
-    return config
-  }, function (error) {
-    return Promise.reject(error)
-})
   
 
 const Todo = ()=>{
@@ -31,6 +24,14 @@ const Todo = ()=>{
 
     useEffect(()=>{
         const accessToken = localStorage.getItem('todo');
+
+        axios.interceptors.request.use(function (config) {
+            config.headers.Authorization = `Bearer ${accessToken}`
+            return config
+        }, function (error) {
+            return Promise.reject(error)
+        })
+
         if(accessToken){
             getTodos()
         }else{
