@@ -60,19 +60,16 @@ const SignIn =()=>{
             password
         }
 
-        
-        axios.post(`${backURL}/auth/signin`, data)
-        .then(response=>{
+        try {
+            const response = await axios.post(`${backURL}/auth/signin`, data);
             const token = response.data.access_token;
             localStorage.setItem("todo", token);
-            navigate('/todo');
-        })
-        .catch(error=>{
+            navigate('/todo')
+        } catch (error) {
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
-        })
+        }
 
-        
     },[email, password]);
 
     return (

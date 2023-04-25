@@ -53,23 +53,22 @@ const SignUp =()=>{
     },[]);
 
 
-    const onSubmit = useCallback((e)=>{
+    const onSubmit = useCallback( async(e)=>{
         e.preventDefault();
         const data = {
             email,
             password
         }
 
-        axios.post(`${backURL}/auth/signup`, data)
-        .then(response=>{
+        try {
+            const response = await axios.post(`${backURL}/auth/signup`, data);
+            // console.log(response);
             alert('회원가입이 완료되었습니다.');
             navigate('/signin', { replace: true });
-        })
-        .catch(error=>{
+        } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message)
-        })
-
+        }
         
     },[email, password]);
     

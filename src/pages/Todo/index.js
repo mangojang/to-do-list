@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import { backURL } from "../../config";
@@ -17,25 +17,26 @@ axios.interceptors.request.use(function (config) {
 const Todo = ()=>{
     const navigate = useNavigate();
     const [todos, setTodos] = useState([]);
+
+    const getTodos = useCallback(async()=>{
+        try {
+            const response = await axios.get(`${backURL}/todos`);
+            setTodos(response.data); 
+        } catch (error) {
+            console.log('에러', error);
+            alert('잠시후 다시 시도해 주세요.')
+        }
+    },[])
     
 
     useEffect(()=>{
         const accessToken = localStorage.getItem('todo');
         if(accessToken){
-
-            axios.get(`${backURL}/todos`)
-            .then(response=>{
-                setTodos(response.data);
-                
-            })
-            .catch(error=>{
-                console.log('에러', error);
-                alert('잠시후 다시 시도해 주세요.')
-            })
-
+            getTodos()
         }else{
             navigate('/signin', {replace: true});
         }
+        
     },[])
 
     const actions = {

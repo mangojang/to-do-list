@@ -8,20 +8,19 @@ const TodoList =({ data, actions}) =>{
     const [isEdit, setIsEdit] = useState(false);
     const [todo, setTodo] = useState(data.todo);
 
-    const onClickDelete = useCallback((e)=>{
+    const onClickDelete = useCallback(async(e)=>{
         const id = Number(e.target.value);
-
-        axios.delete(`${backURL}/todos/${id}`)
-        .then(response=>{
-            actions.delete(id);
-        })
-        .catch(error=>{
+        try {
+            const response = await axios.delete(`${backURL}/todos/${id}`);
+            actions.delete(id);    
+        } catch (error) {
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
-        })
+        }
+       
     },[]);
 
-    const onSubmit = useCallback((e)=>{
+    const onSubmit = useCallback(async(e)=>{
         e.preventDefault();
         const id = Number(e.target.id);
 
@@ -29,19 +28,18 @@ const TodoList =({ data, actions}) =>{
             todo,
             isCompleted : data.isCompleted
         }
-
-        axios.put(`${backURL}/todos/${id}`,sendData)
-        .then(response=>{
+        try {
+            const response = await axios.put(`${backURL}/todos/${id}`,sendData);
             actions.update(response.data);
             setIsEdit((prev=>!prev));
-        })
-        .catch(error=>{
+        } catch (error) {
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
-        })
+        }
+        
     },[todo, data.isCompleted])
 
-    const onCheckUpdate = useCallback((e)=>{
+    const onCheckUpdate = useCallback(async(e)=>{
         const id = Number(e.target.id);
 
         const sendData ={
@@ -49,14 +47,14 @@ const TodoList =({ data, actions}) =>{
             isCompleted : !data.isCompleted
         }
 
-        axios.put(`${backURL}/todos/${id}`,sendData)
-        .then(response=>{
+        try {
+            const response = await axios.put(`${backURL}/todos/${id}`,sendData);
             actions.update(response.data);
-        })
-        .catch(error=>{
+        } catch (error) {
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
-        })
+        }
+
     },[todo, data.isCompleted])
 
     const onChangeInput = useCallback((e)=>{

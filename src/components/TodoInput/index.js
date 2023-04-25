@@ -10,31 +10,45 @@ const TodoInput = ({actions})=>{
     const onChangeTodo = useCallback((e)=>{
         setTodo(e.target.value);
     },[])
-    
-    const onSubmit = useCallback((e)=>{
-        e.preventDefault();
-        const data = {
-            todo
-        }
-        const accessToken = localStorage.getItem('todo');
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
+    const onSubmit = useCallback(async()=>{
+        try {
+            const data = {
+                todo
             }
-        }
-
-        axios.post(`${backURL}/todos`, data, config)
-        .then(response=>{
+            const response = await axios.post(`${backURL}/todos`, data);
             actions.add(response.data);
             setTodo('');
-        })
-        .catch(error=>{
+            
+        } catch (error) {
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
             setTodo('');
-        })
+        }
     },[todo])
+    
+    // const onSubmit = useCallback((e)=>{
+    //     e.preventDefault();
+        
+    //     const accessToken = localStorage.getItem('todo');
+
+    //     const config = {
+    //         headers: {
+    //             Authorization: `Bearer ${accessToken}`
+    //         }
+    //     }
+
+    //     axios.post(`${backURL}/todos`, data, config)
+    //     .then(response=>{
+    //         actions.add(response.data);
+    //         setTodo('');
+    //     })
+    //     .catch(error=>{
+    //         console.log('에러', error);
+    //         alert('잠시후 다시 시도해 주세요.')
+    //         setTodo('');
+    //     })
+    // },[todo])
 
     return(
         <Conatainer>
