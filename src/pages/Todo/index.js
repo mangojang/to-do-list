@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AppLayout from "../AppLayout";
-import { backURL } from "../config";
-import TodoInput from "../TodoInput";
-import TodoList from "../TodoList";
+import AppLayout from "../../components/AppLayout";
+import { backURL } from "../../config";
+import TodoInput from "../../components/TodoInput";
+import TodoList from "../../components/TodoList";
 
 axios.interceptors.request.use(function (config) {
     config.headers.Authorization = `Bearer ${localStorage.getItem('todo')}`

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
-import { backURL } from "../config";
-import { Button, CheckBox, Input } from "../Styles";
+import { backURL } from "../../config";
+import { Button, CheckBox, Input } from "../../Styles";
 import { List } from "./style";
 
 const TodoList =({ data, actions}) =>{

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import AppLayout from "../AppLayout";
-import { Button, FormInputRow, Input } from "../Styles";
+import AppLayout from "../../components/AppLayout";
+import { Button, FormInputRow, Input } from "../../Styles";
 import { useNavigate } from "react-router-dom";
-import { backURL } from "../config";
+import { backURL } from "../../config";
 
 const SignUp =()=>{
     const navigate = useNavigate();

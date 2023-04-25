@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Main from "./Main";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import Todo from "./Todo";
+import Main from "./pages/Main";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Todo from "./pages/Todo";
 
 const errorPage = ()=>{
   return(

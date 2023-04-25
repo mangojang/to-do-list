@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
-import { backURL } from "../config";
-import { Button, Input } from "../Styles";
+import { backURL } from "../../config";
+import { Button, Input } from "../../Styles";
 import { Conatainer, Row } from "./style";
 
 const TodoInput = ({actions})=>{

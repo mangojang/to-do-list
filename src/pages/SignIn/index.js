@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AppLayout from "../AppLayout";
-import { Button, FormInputRow, Input } from "../Styles";
+import AppLayout from "../../components/AppLayout";
+import { Button, FormInputRow, Input } from "../../Styles";
 import { useNavigate } from "react-router-dom";
-import { backURL } from "../config";
+import { backURL } from "../../config";
 
 const SignIn =()=>{
     const navigate = useNavigate();
@@ -53,13 +53,14 @@ const SignIn =()=>{
 
     },[]);
     
-    const onSubmit = useCallback((e)=>{
+    const onSubmit = useCallback(async(e)=>{
         e.preventDefault();
         const data = {
             email,
             password
         }
 
+        
         axios.post(`${backURL}/auth/signin`, data)
         .then(response=>{
             const token = response.data.access_token;
