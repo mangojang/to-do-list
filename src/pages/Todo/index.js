@@ -1,11 +1,18 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, createContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import { backURL } from "../../config";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
   
+export const TodoContext = createContext({
+    todos:[],
+    addTodo: () => {},
+    deleteTodo: () => {},
+    updateTodo: () => {},
+});
+
 
 const Todo = ()=>{
     const navigate = useNavigate();
@@ -40,35 +47,38 @@ const Todo = ()=>{
         
     },[getTodos, navigate])
 
-    const actions = {
-        add(data){
+
+    const value = useMemo(()=>({
+        addTodo(data){
             setTodos((prev)=>{
              return [...prev, data]   
             })
         },
-        delete(id){
+        deleteTodo(id){
             setTodos((prev)=>{
                 return prev.filter((item) => item.id !== Number(id));
             });
         },
-        update(data){
+        updateTodo(data){
             setTodos((prev)=>{
                 return prev.map((item) => item.id === data.id ? data : item)
             })
         }
-    }
+    }),[setTodos])
 
     return(
         <AppLayout type={"todo"}>
-            <div className="inner">
-                <h1>To Do List</h1>
-                <div className="box_top">
-                    <TodoInput actions={actions}/>
+            <TodoContext.Provider value={value}>
+                <div className="inner">
+                    <h1>To Do List</h1>
+                    <div className="box_top">
+                        <TodoInput/>
+                    </div>
+                    <div className="box_bottom">
+                        {todos&&todos.map((v,i)=>(<TodoList data={v} key={i}/>))}
+                    </div>
                 </div>
-                <div className="box_bottom">
-                    {todos&&todos.map((v,i)=>(<TodoList data={v} key={i} actions={actions}/>))}
-                </div>
-            </div>
+            </TodoContext.Provider>
         </AppLayout>
     );
 };
