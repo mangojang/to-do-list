@@ -1,4 +1,3 @@
-import { createContext, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import UserProvider from "./context/UserProvider";
 import Main from "./pages/Main";
