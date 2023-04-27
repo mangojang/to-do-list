@@ -62,7 +62,7 @@ const Todo = ()=>{
         <AppLayout type={"todo"}>
             <TodoContext.Provider value={value}>
                 <div className="inner">
-                    <h1>To Do List</h1>
+                    <h1>TO DO LIST</h1>
                     <div className="box_top">
                         <TodoInput/>
                     </div>
