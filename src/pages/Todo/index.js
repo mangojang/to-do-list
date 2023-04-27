@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useCallback, useEffect, useState, createContext, useMemo } from "react";
+import { useCallback, useEffect, useState, createContext, useMemo, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import { backURL } from "../../config";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
+import { UserContext } from "../../context/UserProvider";
   
 export const TodoContext = createContext({
     todos:[],
@@ -16,6 +17,8 @@ export const TodoContext = createContext({
 
 const Todo = ()=>{
     const navigate = useNavigate();
+    const {loggedIn} = useContext(UserContext);
+
     const [todos, setTodos] = useState([]);
 
     const getTodos = useCallback(async()=>{
@@ -27,25 +30,14 @@ const Todo = ()=>{
             alert('잠시후 다시 시도해 주세요.')
         }
     },[])
-    
 
     useEffect(()=>{
-        const accessToken = localStorage.getItem('todo');
-
-        axios.interceptors.request.use(function (config) {
-            config.headers.Authorization = `Bearer ${accessToken}`
-            return config
-        }, function (error) {
-            return Promise.reject(error)
-        })
-
-        if(accessToken){
+        if(loggedIn){
             getTodos()
         }else{
             navigate('/signin', {replace: true});
         }
-        
-    },[getTodos, navigate])
+    },[loggedIn, getTodos, navigate]);
 
 
     const value = useMemo(()=>({

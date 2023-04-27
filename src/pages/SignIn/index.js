@@ -1,25 +1,25 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import { Button, FormInputRow, Input } from "../../Styles";
 import { useNavigate } from "react-router-dom";
 import { backURL } from "../../config";
+import { UserContext } from "../../context/UserProvider";
 
 const SignIn =()=>{
     const navigate = useNavigate();
-
+    const {loggedIn} = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(true);
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState(true);
-
+    
     useEffect(()=>{
-        const token = localStorage.getItem('todo');
-        if(token){
+        if(loggedIn){
             navigate('/todo', {replace: true});
         }
-    },[navigate])
+    },[loggedIn, navigate]);
 
     const onChangeEmail = useCallback((e)=>{
         let value = e.target.value;
