@@ -9,6 +9,7 @@ const TodoList =({ data }) =>{
     const { deleteTodo, updateTodo } = useContext(TodoContext);
     const [isEdit, setIsEdit] = useState(false);
     const [todo, setTodo] = useState(data.todo);
+    const [checked, setChecked] = useState(data.isCompleted);
 
     const onClickDelete = useCallback(async(e)=>{
         const id = Number(e.target.value);
@@ -42,6 +43,7 @@ const TodoList =({ data }) =>{
     },[todo, data.isCompleted, updateTodo])
 
     const onCheckUpdate = useCallback(async(e)=>{
+        console.log('@@')
         const id = Number(e.target.id);
 
         const sendData ={
@@ -55,6 +57,7 @@ const TodoList =({ data }) =>{
             const response = await axios.put(`${backURL}/todos/${id}`,sendData);
             console.log('check2',response);
             updateTodo(response.data);
+            setChecked((prev)=>(!prev));
         } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
@@ -80,15 +83,15 @@ const TodoList =({ data }) =>{
 
     return (
         <List>
-            <form id={data.id} onSubmit={onSubmit}>
+            <form onSubmit={onSubmit}>
                 <div className="inner">
                     <CheckBox>
-                        <input type="checkbox" id={"check_"+data.id}/>
-                        <label htmlFor={"check_"+data.id}><span></span></label>
+                        <input type="checkbox" id={data.id} checked={checked} onChange={onCheckUpdate}/>
+                        <label htmlFor={data.id}><span></span></label>
                     </CheckBox>
                     {isEdit
                         ?<Input type={'text'} value={todo} data-testid="modify-input" onChange={onChangeInput} />
-                        :<Text>{data.todo}</Text>
+                        :<Text className={checked&&'done'}>{data.todo}</Text>
                     }
                     {isEdit
                         ?<>
@@ -96,7 +99,7 @@ const TodoList =({ data }) =>{
                             <Icon type="button" title="취소" styletype='cancle' data-testid="cancel-button" onClick={onClickCancle}>취소</Icon>
                         </>
                         :<>
-                            <Icon type="button" title="수정" styletype='edit' data-testid="modify-button" onClick={onToggleEdit}>수정</Icon>
+                            <Icon type="button" title="수정" styletype='edit' data-testid="modify-button" onClick={onToggleEdit} style={{visibility:checked?'hidden':'visible'}}>수정</Icon>
                             <Icon type="button" title="삭제" styletype='delete' data-testid="delete-button" value={data.id} onClick={onClickDelete}>삭제</Icon>
                         </>
                     }

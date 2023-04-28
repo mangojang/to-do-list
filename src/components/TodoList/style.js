@@ -24,5 +24,7 @@ export const Text = styled.span`
     width: 300px;
     word-break: keep-all;
     position: relative;
-    text-decoration: line-through;
+    &.done{
+        text-decoration: line-through;
+    }
 `;
