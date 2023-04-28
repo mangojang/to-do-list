@@ -7,6 +7,20 @@ export const Layout = styled.div`
     min-height: 100vh;
     justify-content: center;
     align-items: center;
+    .sign{
+        display: block;
+        font-size: 12px;
+        color: #c9c9c9;
+        text-align: center;
+        margin-top: 10px;
+        a{
+            color: inherit;
+            text-decoration: none;
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+    }
 `;
 export const FormBox = styled.div`
    padding:  30px 60px;

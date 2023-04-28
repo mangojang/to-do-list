@@ -24,12 +24,13 @@ const AppLayout = ({type, children})=>{
             {type==='form'
             ?<FormBox>
                 {children}
+                <span className="sign">made by <a href="mailto:mangojang@gmail.com">mangojang</a></span>
             </FormBox>
             :<TodoBox>
                 {children}
+                <span className="sign">made by <a href="mailto:mangojang@gmail.com">mangojang</a></span>
             </TodoBox>
             }
-            
       </Layout>
     );
 };
