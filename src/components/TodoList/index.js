@@ -2,8 +2,8 @@ import axios from "axios";
 import { useCallback, useContext, useState } from "react";
 import { backURL } from "../../config";
 import { TodoContext } from "../../pages/Todo";
-import { Button, CheckBox, Input } from "../../Styles";
-import { List } from "./style";
+import { CheckBox, Icon, Input } from "../../Styles";
+import { List, Text } from "./style";
 
 const TodoList =({ data }) =>{
     const { deleteTodo, updateTodo } = useContext(TodoContext);
@@ -82,23 +82,24 @@ const TodoList =({ data }) =>{
         <List>
             <form id={data.id} onSubmit={onSubmit}>
                 <div className="inner">
-                    <label>
-                        <CheckBox type="checkbox" id={data.id} checked={data.isCompleted} onChange={onCheckUpdate}/>
-                        {isEdit
-                            ?<Input type={'text'} value={todo} data-testid="modify-input" onChange={onChangeInput} />
-                            :<span>{data.todo}</span>
-                        }
-                    </label>
-                        {isEdit
-                            ?<>
-                                <Button type="submit" styletype='small' data-testid="submit-button">제출</Button>
-                                <Button type="button" styletype='small_white' data-testid="cancel-button" onClick={onClickCancle}>취소</Button>
-                            </>
-                            :<>
-                                <Button type="button" styletype='small' data-testid="modify-button" onClick={onToggleEdit}>수정</Button>
-                                <Button type="button" styletype='small_white' data-testid="delete-button" value={data.id} onClick={onClickDelete}>삭제</Button>
-                            </>
-                        }
+                    <CheckBox>
+                        <input type="checkbox" id={"check_"+data.id}/>
+                        <label htmlFor={"check_"+data.id}><span></span></label>
+                    </CheckBox>
+                    {isEdit
+                        ?<Input type={'text'} value={todo} data-testid="modify-input" onChange={onChangeInput} />
+                        :<Text>{data.todo}</Text>
+                    }
+                    {isEdit
+                        ?<>
+                            <Icon type="submit" title="제출" styletype='complete' data-testid="submit-button">제출</Icon>
+                            <Icon type="button" title="취소" styletype='cancle' data-testid="cancel-button" onClick={onClickCancle}>취소</Icon>
+                        </>
+                        :<>
+                            <Icon type="button" title="수정" styletype='edit' data-testid="modify-button" onClick={onToggleEdit}>수정</Icon>
+                            <Icon type="button" title="삭제" styletype='delete' data-testid="delete-button" value={data.id} onClick={onClickDelete}>삭제</Icon>
+                        </>
+                    }
                 </div>
             </form>
         </List>

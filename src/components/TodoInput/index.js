@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useContext, useState } from "react";
 import { backURL } from "../../config";
 import { TodoContext } from "../../pages/Todo";
-import { Button, Input } from "../../Styles";
+import { Icon, Input } from "../../Styles";
 import { Conatainer, Row } from "./style";
 
 const TodoInput = ()=>{
@@ -35,7 +35,7 @@ const TodoInput = ()=>{
             <form onSubmit={onSubmit}>
                 <Row>
                     <Input type={'text'} id='todo' data-testid="new-todo-input" value={todo} onChange={onChangeTodo} />
-                    <Button type="submit" styletype="small" data-testid="new-todo-add-button">추가</Button>
+                    <Icon type="submit" title="추가" styletype="add" data-testid="new-todo-add-button">추가</Icon>
                 </Row>
             </form>
         </Conatainer>

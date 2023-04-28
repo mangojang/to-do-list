@@ -11,7 +11,7 @@ export const Layout = styled.div`
 export const FormBox = styled.div`
    padding:  30px 60px;
    border-radius: 40px;
-   border: 1px solid #d9d9d9;
+   border: 1px solid black;
    h1{
     font-size: 60px;
     line-height: 1.2;
@@ -34,7 +34,7 @@ export const FormBox = styled.div`
 export const TodoBox = styled.div`
      padding:  30px 60px;
     border-radius: 40px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid black;
     h1{
         font-size: 60px;
         line-height: 1.2;
