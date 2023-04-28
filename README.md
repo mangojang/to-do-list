@@ -1,8 +1,8 @@
-# wanted-pre-onboarding-frontend
+# to-do-list
 
 ---
 
-원티드 프리온보딩 프론트엔드 사전 과제 레파지토리 입니다. 
+React CRA 기반으로 만든 to-do-list 입니다.
 
 ## 배포 주소
 
@@ -22,7 +22,7 @@
 ### Installation
 
 ```bash
-git clone https://github.com/mangojang/wanted-pre-onboarding-frontend.git 
+git clone https://github.com/mangojang/to-do-list.git 
 ```
 
 ### Start
