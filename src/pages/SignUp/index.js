@@ -68,6 +68,8 @@ const SignUp =()=>{
         } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message)
+            setEmail('');
+            setPassword('');
         }
         
     },[email, password, navigate]);
@@ -80,11 +82,11 @@ const SignUp =()=>{
                 <form onSubmit={onSubmit}>
                     <FormInputRow>
                         <label htmlFor="email">이메일</label>
-                        <Input type={"text"} id="email" placeholder="이메일을 입력해주세요" data-testid="email-input" onChange={onChangeEmail}/>
+                        <Input type={"text"} id="email" placeholder="이메일을 입력해주세요" data-testid="email-input" value={email} onChange={onChangeEmail}/>
                     </FormInputRow>
                     <FormInputRow>
                         <label htmlFor="password">비밀번호</label>
-                        <Input type={"password"} id="password" placeholder="비밀번호를 입력해주세요" data-testid="password-input" onChange={onChangePassword}/>
+                        <Input type={"password"} id="password" placeholder="비밀번호를 입력해주세요" data-testid="password-input" value={password} onChange={onChangePassword}/>
                     </FormInputRow>
                     <div className="btns_box">
                         <Button type={"submit"} styletype="default" data-testid="signup-button" disabled={emailError || passwordError ? true : false}>회원가입</Button>
