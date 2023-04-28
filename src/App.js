@@ -7,7 +7,7 @@ import Todo from "./pages/Todo";
 
 const errorPage = ()=>{
   return(
-    <div>404 error</div>
+    <h1>404 error</h1>
   ) 
 }
 
