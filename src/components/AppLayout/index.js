@@ -17,7 +17,7 @@ const AppLayout = ({type, children})=>{
                 return Promise.reject(error)
             })
         }
-    },[setLoggedIn])
+    },[])
     
     return(
         <Layout>

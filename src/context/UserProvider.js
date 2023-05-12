@@ -1,31 +1,26 @@
-import { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 
-export const UserContext = createContext({
-    loggedIn: false,
-    setLoggedIn: () => {}
-});
+export const UserContext = createContext();
 
-const UserProvider = ({children})=>{
-    const setLoggedIn = (data) => {
-        setState(prev => (
-            {
-                ...prev, 
-                loggedIn: data
-            }
-        ))
-    }
-
-    const initialState = {
+const UserProvider = (props)=>{
+    const [user, setUser] = useState({
         loggedIn: false,
-        setLoggedIn
-    }
+    });
 
-    const [state, setState] = useState(initialState);
+    const value = useMemo(()=>{
+        function setLoggedIn (data){
+            setUser(prev => (
+                {
+                    ...prev, 
+                    loggedIn: data
+                }
+            ))
+        }
+        return {...user, setLoggedIn}
+    },[user])
     
     return(
-        <UserContext.Provider value={state}>
-            {children}
-        </UserContext.Provider>
+        <UserContext.Provider value={value} {...props} />
     )
 }
 
