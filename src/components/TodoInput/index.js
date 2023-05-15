@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useContext, useState } from "react";
 import { backURL } from "../../config";
-import { TodoContext } from "../../pages/Todo";
+import { TodoContext } from "../../context/TodoProvider";
 import { Icon, Input } from "../../Styles";
 import { Conatainer, Row } from "./style";
 

@@ -1,30 +1,25 @@
 import axios from "axios";
-import { useCallback, useEffect, useState, createContext, useMemo, useContext } from "react";
+import { useCallback, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import { backURL } from "../../config";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
 import { UserContext } from "../../context/UserProvider";
+import { TodoContext } from "../../context/TodoProvider";
   
-export const TodoContext = createContext({
-    todos:[],
-    addTodo: () => {},
-    deleteTodo: () => {},
-    updateTodo: () => {},
-});
-
 
 const Todo = ()=>{
     const navigate = useNavigate();
     const {loggedIn} = useContext(UserContext);
+    const {todo, loadTodo} = useContext(TodoContext)
 
-    const [todos, setTodos] = useState([]);
 
     const getTodos = useCallback(async()=>{
+        console.log('gettodo');
         try {
             const response = await axios.get(`${backURL}/todos`);
-            setTodos(response.data); 
+            loadTodo(response.data);
         } catch (error) {
             console.log('에러', error);
             alert('잠시후 다시 시도해 주세요.')
@@ -39,38 +34,17 @@ const Todo = ()=>{
         }
     },[loggedIn, getTodos, navigate]);
 
-
-    const value = useMemo(()=>({
-        addTodo(data){
-            setTodos((prev)=>{
-             return [...prev, data]   
-            })
-        },
-        deleteTodo(id){
-            setTodos((prev)=>{
-                return prev.filter((item) => item.id !== Number(id));
-            });
-        },
-        updateTodo(data){
-            setTodos((prev)=>{
-                return prev.map((item) => item.id === data.id ? data : item)
-            })
-        }
-    }),[setTodos])
-
     return(
         <AppLayout type={"todo"}>
-            <TodoContext.Provider value={value}>
-                <div className="inner">
-                    <h1>TO DO LIST</h1>
-                    <div className="box_top">
-                        <TodoInput/>
-                    </div>
-                    <div className="box_bottom">
-                        {todos&&todos.map((v,i)=>(<TodoList data={v} key={i}/>))}
-                    </div>
+            <div className="inner">
+                <h1>TO DO LIST</h1>
+                <div className="box_top">
+                    <TodoInput/>
                 </div>
-            </TodoContext.Provider>
+                <div className="box_bottom">
+                    {todo&&todo.map((v,i)=>(<TodoList data={v} key={i}/>))}
+                </div>
+            </div>
         </AppLayout>
     );
 };

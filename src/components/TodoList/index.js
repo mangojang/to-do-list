@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { backURL } from "../../config";
-import { TodoContext } from "../../pages/Todo";
+import { TodoContext } from "../../context/TodoProvider";
 import { CheckBox, Icon, Input } from "../../Styles";
 import { List, Text } from "./style";
 
@@ -9,7 +9,11 @@ const TodoList =({ data }) =>{
     const { deleteTodo, updateTodo } = useContext(TodoContext);
     const [isEdit, setIsEdit] = useState(false);
     const [todo, setTodo] = useState(data.todo);
-    const [checked, setChecked] = useState(data.isCompleted);
+    const [checked, setChecked] = useState(false);
+
+    useEffect(()=>{
+        setChecked(data.isCompleted)
+    },[data.isCompleted])
 
     const onClickDelete = useCallback(async(e)=>{
         const id = Number(e.target.value);
@@ -43,19 +47,16 @@ const TodoList =({ data }) =>{
     },[todo, data.isCompleted, updateTodo])
 
     const onCheckUpdate = useCallback(async(e)=>{
-        console.log('@@')
-        const id = Number(e.target.id);
+        const id = Number(e.target.id.split('_')[1]);
 
         const sendData ={
             todo: data.todo,
             // todo,
             isCompleted : !data.isCompleted
         }
-
+        
         try {
-            console.log('check1',sendData);
             const response = await axios.put(`${backURL}/todos/${id}`,sendData);
-            console.log('check2',response);
             updateTodo(response.data);
             setChecked((prev)=>(!prev));
         } catch (error) {
@@ -83,11 +84,11 @@ const TodoList =({ data }) =>{
 
     return (
         <List>
-            <form onSubmit={onSubmit}>
+            <form id={data.id} onSubmit={onSubmit}>
                 <div className="inner">
                     <CheckBox>
-                        <input type="checkbox" id={data.id} checked={checked} onChange={onCheckUpdate}/>
-                        <label htmlFor={data.id}><span></span></label>
+                        <input type="checkbox" id={"check_"+data.id} checked={checked} onChange={onCheckUpdate}/>
+                        <label htmlFor={"check_"+data.id}><span></span></label>
                     </CheckBox>
                     {isEdit
                         ?<Input type={'text'} value={todo} data-testid="modify-input" onChange={onChangeInput} />
