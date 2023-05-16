@@ -1,14 +1,14 @@
-import axios from "axios";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from "../../components/AppLayout";
 import { Button, FormInputRow, Input } from "../../Styles";
 import { useNavigate } from "react-router-dom";
-import { backURL } from "../../config";
-import { UserContext } from "../../context/UserProvider";
+import { signUp } from "../../actions/user";
 
 const SignUp =()=>{
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {loggedIn} = useContext(UserContext);
+    const { loggedIn } = useSelector((state)=> state.user);
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(true);
     const [password, setPassword] = useState('');
@@ -59,20 +59,21 @@ const SignUp =()=>{
             email,
             password
         }
-
-        try {
-            const response = await axios.post(`${backURL}/auth/signup`, data);
-            // console.log(response);
-            alert('회원가입이 완료되었습니다.');
-            navigate('/signin', { replace: true });
-        } catch (error) {
-            console.log('에러', error);
-            alert(error.response.data.message)
-            setEmail('');
-            setPassword('');
+        const cb ={
+            successed(){
+                alert('회원가입이 완료되었습니다.');
+                navigate('/signin', { replace: true });
+            },
+            failed(){
+                setEmail('');
+                setPassword('');
+            }
+            
         }
-        
-    },[email, password, navigate]);
+
+        dispatch(signUp(data, cb))
+
+    },[email, password, navigate, dispatch]);
     
 
     return (

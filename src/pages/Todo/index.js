@@ -1,17 +1,16 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
-import { UserContext } from "../../context/UserProvider";
 import { getTodos } from "../../actions/todos";
   
 
 const Todo = ()=>{
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {loggedIn} = useContext(UserContext);
+    const { loggedIn } = useSelector((state)=> state.user);
     const todos = useSelector((state)=>state.todos);
 
     useEffect(()=>{

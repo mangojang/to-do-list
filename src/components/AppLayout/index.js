@@ -1,15 +1,11 @@
 import axios from "axios";
-import { useContext, useEffect } from "react";
-import { UserContext } from "../../context/UserProvider";
+import { useEffect } from "react";
 import { FormBox, Layout, TodoBox } from "./style";
 
 const AppLayout = ({type, children})=>{
-    const {setLoggedIn} = useContext(UserContext);
-    
     useEffect(()=>{
         const token = localStorage.getItem('todo');
         if(token){
-            setLoggedIn(true);
             axios.interceptors.request.use(function (config) {
                 config.headers.Authorization = `Bearer ${token}`
                 return config
@@ -18,7 +14,7 @@ const AppLayout = ({type, children})=>{
             })
         }
     },[])
-    
+
     return(
         <Layout>
             {type==='form'

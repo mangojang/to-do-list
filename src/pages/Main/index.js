@@ -1,18 +1,17 @@
 
 import { useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 const Main =()=>{
     const navigate = useNavigate();
+    const { loggedIn } = useSelector((state)=> state.user);
 
     useEffect(()=>{
-        const token = localStorage.getItem('todo');
-        if(token){
-            navigate('/todo', {replace: true});
-        }else{
-            navigate('signin', {replace: true})
-        }
-    },[navigate])
+        loggedIn
+        ? navigate('/todo', {replace: true}) 
+        : navigate('signin', {replace: true})
+    },[navigate, loggedIn])
 
 }
 

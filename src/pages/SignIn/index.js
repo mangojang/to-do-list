@@ -1,15 +1,15 @@
-import axios from "axios";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import { Button, FormInputRow, Input } from "../../Styles";
 import { useNavigate } from "react-router-dom";
-import { backURL } from "../../config";
-import { UserContext } from "../../context/UserProvider";
+import { signIn } from "../../actions/user";
 
 const SignIn =()=>{
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {loggedIn} = useContext(UserContext);
+    const { loggedIn } = useSelector((state)=> state.user);
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(true);
     const [password, setPassword] = useState('');
@@ -60,17 +60,15 @@ const SignIn =()=>{
             password
         }
 
-        try {
-            const response = await axios.post(`${backURL}/auth/signin`, data);
-            const token = response.data.access_token;
-            localStorage.setItem("todo", token);
-            navigate('/todo')
-        } catch (error) {
-            console.log('에러', error);
-            alert('잠시후 다시 시도해 주세요.')
+        const cb ={
+            successed(){
+                navigate('/todo')
+            },
         }
 
-    },[email, password, navigate]);
+        dispatch(signIn(data, cb))
+
+    },[email, password, navigate, dispatch]);
 
     return (
         <AppLayout type={"form"}>

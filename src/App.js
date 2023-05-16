@@ -1,5 +1,8 @@
+import axios from "axios";
+import { useEffect } from "react";
+import { useDispatch} from 'react-redux';
 import { Route, Routes } from "react-router-dom";
-import UserProvider from "./context/UserProvider";
+import { getUser } from "./actions/user";
 import Main from "./pages/Main";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -12,10 +15,18 @@ const errorPage = ()=>{
 }
 
 
-function App() {
+const App =()=>{
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    const token = localStorage.getItem('todo');
+    if(token){
+      dispatch(getUser(token))
+    }
+    
+  },[dispatch])
 
   return (
-    <UserProvider>
       <Routes>
           <Route exact path="/" element={<Main/>} />
           <Route path="/signin" element={<SignIn/>} />
@@ -23,7 +34,6 @@ function App() {
           <Route path="/todo" element={<Todo/>} />
           <Route path="/*"  Component={errorPage} />
       </Routes>
-    </UserProvider>
   );
 }
 
