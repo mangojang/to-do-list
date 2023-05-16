@@ -1,38 +1,26 @@
-import axios from "axios";
-import { useCallback, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
-import { backURL } from "../../config";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
 import { UserContext } from "../../context/UserProvider";
-import { TodoContext } from "../../context/TodoProvider";
+import { getTodos } from "../../actions/todos";
   
 
 const Todo = ()=>{
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const {loggedIn} = useContext(UserContext);
-    const {todo, loadTodo} = useContext(TodoContext)
-
-
-    const getTodos = useCallback(async()=>{
-        console.log('gettodo');
-        try {
-            const response = await axios.get(`${backURL}/todos`);
-            loadTodo(response.data);
-        } catch (error) {
-            console.log('에러', error);
-            alert('잠시후 다시 시도해 주세요.')
-        }
-    },[])
+    const todos = useSelector((state)=>state.todos);
 
     useEffect(()=>{
         if(loggedIn){
-            getTodos()
+            dispatch(getTodos())
         }else{
             navigate('/signin', {replace: true});
         }
-    },[loggedIn, getTodos, navigate]);
+    },[loggedIn, dispatch, navigate]);
 
     return(
         <AppLayout type={"todo"}>
@@ -42,7 +30,7 @@ const Todo = ()=>{
                     <TodoInput/>
                 </div>
                 <div className="box_bottom">
-                    {todo&&todo.map((v,i)=>(<TodoList data={v} key={i}/>))}
+                    {todos&&todos.map((v,i)=>(<TodoList data={v} key={i}/>))}
                 </div>
             </div>
         </AppLayout>

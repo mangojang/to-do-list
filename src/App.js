@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import TodoProvider from "./context/TodoProvider";
 import UserProvider from "./context/UserProvider";
 import Main from "./pages/Main";
 import SignIn from "./pages/SignIn";
@@ -17,7 +16,6 @@ function App() {
 
   return (
     <UserProvider>
-      <TodoProvider>
       <Routes>
           <Route exact path="/" element={<Main/>} />
           <Route path="/signin" element={<SignIn/>} />
@@ -25,7 +23,6 @@ function App() {
           <Route path="/todo" element={<Todo/>} />
           <Route path="/*"  Component={errorPage} />
       </Routes>
-      </TodoProvider>
     </UserProvider>
   );
 }

@@ -1,12 +1,11 @@
-import axios from "axios";
-import { useCallback, useContext, useState } from "react";
-import { backURL } from "../../config";
-import { TodoContext } from "../../context/TodoProvider";
+import { useCallback, useState } from "react";
+import { useDispatch } from 'react-redux';
+import { addTodo } from "../../actions/todos";
 import { Icon, Input } from "../../Styles";
 import { Conatainer, Row } from "./style";
 
 const TodoInput = ()=>{
-    const { addTodo } = useContext(TodoContext);
+    const dispatch = useDispatch();
     const [todo, setTodo] = useState('');
 
     const onChangeTodo = useCallback((e)=>{
@@ -15,20 +14,17 @@ const TodoInput = ()=>{
 
     const onSubmit = useCallback(async(e)=>{
         e.preventDefault();
-        try {
-            const data = {
-                todo
-            }
-            const response = await axios.post(`${backURL}/todos`, data);
-            addTodo(response.data);
-            setTodo('');
-            
-        } catch (error) {
-            console.log('에러', error);
-            alert('잠시후 다시 시도해 주세요.')
+        const sendData = {
+            todo
+        }
+
+        const cb = function(){
             setTodo('');
         }
-    },[todo, addTodo])
+        
+        dispatch(addTodo(sendData, cb))
+       
+    },[todo, dispatch])
     
     return(
         <Conatainer>

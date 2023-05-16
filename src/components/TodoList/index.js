@@ -1,70 +1,48 @@
-import axios from "axios";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { backURL } from "../../config";
-import { TodoContext } from "../../context/TodoProvider";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from 'react-redux';
+import { deleteTodo, updateTodo } from "../../actions/todos";
 import { CheckBox, Icon, Input } from "../../Styles";
 import { List, Text } from "./style";
 
 const TodoList =({ data }) =>{
-    const { deleteTodo, updateTodo } = useContext(TodoContext);
+    const dispatch = useDispatch();
     const [isEdit, setIsEdit] = useState(false);
     const [todo, setTodo] = useState(data.todo);
     const [checked, setChecked] = useState(false);
 
-    useEffect(()=>{
-        setChecked(data.isCompleted)
-    },[data.isCompleted])
-
     const onClickDelete = useCallback(async(e)=>{
-        const id = Number(e.target.value);
-        try {
-            const response = await axios.delete(`${backURL}/todos/${id}`);
-            deleteTodo(id);
-        } catch (error) {
-            console.log('에러', error);
-            alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
-        }
-       
-    },[deleteTodo]);
+        dispatch(deleteTodo(data.id))
+    },[data.id, dispatch]);
 
     const onSubmit = useCallback(async(e)=>{
         e.preventDefault();
-        const id = Number(e.target.id);
-
-        const sendData ={
+        const sendData = {
+            id: data.id,
             todo,
-            isCompleted : data.isCompleted
+            isCompleted: data.isCompleted
         }
-        try {
-            const response = await axios.put(`${backURL}/todos/${id}`,sendData);
-            updateTodo(response.data);
+        const cb = function(){
             setIsEdit((prev=>!prev));
-        } catch (error) {
-            console.log('에러', error);
-            alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
         }
         
-    },[todo, data.isCompleted, updateTodo])
+        dispatch(updateTodo(sendData, cb))
+        
+    },[data.id, todo, data.isCompleted, dispatch])
 
     const onCheckUpdate = useCallback(async(e)=>{
-        const id = Number(e.target.id.split('_')[1]);
+        const sendData = {
+            id: data.id,
+            todo,
+            isCompleted: data.isCompleted
+        }
 
-        const sendData ={
-            todo: data.todo,
-            // todo,
-            isCompleted : !data.isCompleted
+        const cb = function(){
+            setChecked((prev)=>(!prev));
         }
         
-        try {
-            const response = await axios.put(`${backURL}/todos/${id}`,sendData);
-            updateTodo(response.data);
-            setChecked((prev)=>(!prev));
-        } catch (error) {
-            console.log('에러', error);
-            alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
-        }
-
-    },[data.todo, data.isCompleted, updateTodo])
+        dispatch(updateTodo(sendData, cb))
+        
+    },[data.id, todo, data.isCompleted, dispatch])
 
     const onChangeInput = useCallback((e)=>{
         setTodo(e.target.value);
