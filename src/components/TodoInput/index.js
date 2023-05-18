@@ -1,12 +1,13 @@
 import axios from "axios";
+import { observer } from "mobx-react";
 import { useCallback, useContext, useState } from "react";
 import { backURL } from "../../config";
-import { TodoContext } from "../../context/TodoProvider";
+import { TodoContext } from "../../context/TodoContext";
 import { Icon, Input } from "../../Styles";
 import { Conatainer, Row } from "./style";
 
 const TodoInput = ()=>{
-    const { addTodo } = useContext(TodoContext);
+    const todos = useContext(TodoContext)
     const [todo, setTodo] = useState('');
 
     const onChangeTodo = useCallback((e)=>{
@@ -20,7 +21,7 @@ const TodoInput = ()=>{
                 todo
             }
             const response = await axios.post(`${backURL}/todos`, data);
-            addTodo(response.data);
+            todos.addTodo(response.data);
             setTodo('');
             
         } catch (error) {
@@ -28,7 +29,7 @@ const TodoInput = ()=>{
             alert('잠시후 다시 시도해 주세요.')
             setTodo('');
         }
-    },[todo, addTodo])
+    },[todo, todos])
     
     return(
         <Conatainer>
@@ -42,4 +43,4 @@ const TodoInput = ()=>{
     );
 };
 
-export default TodoInput;
+export default observer(TodoInput);

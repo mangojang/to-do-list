@@ -1,15 +1,17 @@
 import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { backURL } from "../../config";
-import { TodoContext } from "../../context/TodoProvider";
+import { TodoContext } from "../../context/TodoContext";
 import { CheckBox, Icon, Input } from "../../Styles";
 import { List, Text } from "./style";
 
 const TodoList =({ data }) =>{
-    const { deleteTodo, updateTodo } = useContext(TodoContext);
+    const todos = useContext(TodoContext);
     const [isEdit, setIsEdit] = useState(false);
     const [todo, setTodo] = useState(data.todo);
     const [checked, setChecked] = useState(false);
+
+    console.log('data',data);
 
     useEffect(()=>{
         setChecked(data.isCompleted)
@@ -19,13 +21,13 @@ const TodoList =({ data }) =>{
         const id = Number(e.target.value);
         try {
             const response = await axios.delete(`${backURL}/todos/${id}`);
-            deleteTodo(id);
+            todos.deleteTodo(id);
         } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
         }
        
-    },[deleteTodo]);
+    },[todos]);
 
     const onSubmit = useCallback(async(e)=>{
         e.preventDefault();
@@ -37,14 +39,14 @@ const TodoList =({ data }) =>{
         }
         try {
             const response = await axios.put(`${backURL}/todos/${id}`,sendData);
-            updateTodo(response.data);
+            todos.updateTodo(response.data);
             setIsEdit((prev=>!prev));
         } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
         }
         
-    },[todo, data.isCompleted, updateTodo])
+    },[todo, data.isCompleted, todos])
 
     const onCheckUpdate = useCallback(async(e)=>{
         const id = Number(e.target.id.split('_')[1]);
@@ -57,14 +59,14 @@ const TodoList =({ data }) =>{
         
         try {
             const response = await axios.put(`${backURL}/todos/${id}`,sendData);
-            updateTodo(response.data);
+            todos.updateTodo(response.data);
             setChecked((prev)=>(!prev));
         } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
         }
 
-    },[data.todo, data.isCompleted, updateTodo])
+    },[data.todo, data.isCompleted, todos])
 
     const onChangeInput = useCallback((e)=>{
         setTodo(e.target.value);

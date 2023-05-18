@@ -1,10 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import TodoProvider from "./context/TodoProvider";
+import { TodoContext, TodoProvider } from "./context/TodoContext";
 import UserProvider from "./context/UserProvider";
 import Main from "./pages/Main";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Todo from "./pages/Todo";
+import todoStore from "./stores/todoStore";
 
 const errorPage = ()=>{
   return(
@@ -12,12 +13,13 @@ const errorPage = ()=>{
   ) 
 }
 
+const store = new todoStore();
 
 function App() {
 
   return (
     <UserProvider>
-      <TodoProvider>
+      <TodoProvider value={store}>
       <Routes>
           <Route exact path="/" element={<Main/>} />
           <Route path="/signin" element={<SignIn/>} />
