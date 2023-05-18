@@ -52,6 +52,7 @@ npm start
 - Axios
 - Styled Components
 - Context API
+- MobX
 
 백엔드는 [링크](https://github.com/walking-sunset/selection-task) 참고 바랍니다.
 
