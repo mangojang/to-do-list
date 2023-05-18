@@ -5,14 +5,14 @@ import AppLayout from "../../components/AppLayout";
 import { backURL } from "../../config";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
-import { UserContext } from "../../context/UserProvider";
 import { TodoContext } from "../../context/TodoContext";
 import { observer } from "mobx-react";
+import { UserContext } from "../../context/UserContext";
   
 
 const Todo = ()=>{
     const navigate = useNavigate();
-    const {loggedIn} = useContext(UserContext);
+    const user = useContext(UserContext);
     const todos = useContext(TodoContext)
 
     const getTodos = useCallback(async()=>{
@@ -26,12 +26,12 @@ const Todo = ()=>{
     },[])
 
     useEffect(()=>{
-        if(loggedIn){
+        if(user.user.loggedIn){
             getTodos()
         }else{
             navigate('/signin', {replace: true});
         }
-    },[loggedIn, getTodos, navigate]);
+    },[user, getTodos, navigate]);
 
     return(
         <AppLayout type={"todo"}>

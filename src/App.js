@@ -1,11 +1,12 @@
+import { observer } from "mobx-react";
+import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { TodoContext, TodoProvider } from "./context/TodoContext";
-import UserProvider from "./context/UserProvider";
+import { UserContext } from "./context/UserContext";
+
 import Main from "./pages/Main";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Todo from "./pages/Todo";
-import todoStore from "./stores/todoStore";
 
 const errorPage = ()=>{
   return(
@@ -13,13 +14,18 @@ const errorPage = ()=>{
   ) 
 }
 
-const store = new todoStore();
 
 function App() {
+  const user = useContext(UserContext);
+
+  useEffect(()=>{
+    const token = localStorage.getItem('todo');
+    if(token){
+        user.setLoggedIn(true)      
+    }
+  },[user])
 
   return (
-    <UserProvider>
-      <TodoProvider value={store}>
       <Routes>
           <Route exact path="/" element={<Main/>} />
           <Route path="/signin" element={<SignIn/>} />
@@ -27,9 +33,7 @@ function App() {
           <Route path="/todo" element={<Todo/>} />
           <Route path="/*"  Component={errorPage} />
       </Routes>
-      </TodoProvider>
-    </UserProvider>
   );
 }
 
-export default App;
+export default observer(App);

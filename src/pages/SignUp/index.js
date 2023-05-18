@@ -4,21 +4,22 @@ import AppLayout from "../../components/AppLayout";
 import { Button, FormInputRow, Input } from "../../Styles";
 import { useNavigate } from "react-router-dom";
 import { backURL } from "../../config";
-import { UserContext } from "../../context/UserProvider";
+import { UserContext } from "../../context/UserContext";
+import { observer } from "mobx-react";
 
 const SignUp =()=>{
     const navigate = useNavigate();
-    const {loggedIn} = useContext(UserContext);
+    const user = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(true);
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState(true);
 
     useEffect(()=>{
-        if(loggedIn){
+        if(user.user.loggedIn){
             navigate('/todo', {replace: true});
         }
-    },[loggedIn, navigate]);
+    },[user, navigate]);
 
     const onChangeEmail = useCallback((e)=>{
         let value = e.target.value;
@@ -97,4 +98,4 @@ const SignUp =()=>{
     );
 };
 
-export default SignUp;
+export default observer(SignUp);

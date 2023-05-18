@@ -4,12 +4,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
+import { TodoProvider } from "./context/TodoContext";
+import { UserProvider } from "./context/UserContext";
+import todoStore from "./stores/todoStore";
+import userStore from "./stores/userStore";
+
+const todostore = new todoStore();
+const userstore = new userStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <UserProvider value={userstore}>
+        <TodoProvider value={todostore}>
+          <App />
+        </TodoProvider>
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
