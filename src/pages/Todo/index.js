@@ -5,13 +5,14 @@ import AppLayout from "../../components/AppLayout";
 import { backURL } from "../../config";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
-import { UserContext } from "../../context/UserProvider";
 import { TodoContext } from "../../context/TodoProvider";
+import { useRecoilValue} from 'recoil';
+import { isLoggedInState } from "../../atoms/userAtoms";
   
 
 const Todo = ()=>{
     const navigate = useNavigate();
-    const {loggedIn} = useContext(UserContext);
+    const loggedIn = useRecoilValue(isLoggedInState)
     const {todo, loadTodo} = useContext(TodoContext)
 
 
@@ -32,7 +33,7 @@ const Todo = ()=>{
         }else{
             navigate('/signin', {replace: true});
         }
-    },[loggedIn, getTodos, navigate]);
+    },[loggedIn]);
 
     return(
         <AppLayout type={"todo"}>

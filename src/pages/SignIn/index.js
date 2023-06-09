@@ -1,15 +1,16 @@
 import axios from "axios";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import { Button, FormInputRow, Input } from "../../Styles";
 import { useNavigate } from "react-router-dom";
 import { backURL } from "../../config";
-import { UserContext } from "../../context/UserProvider";
+import { isLoggedInState } from "../../atoms/userAtoms";
+import { useRecoilValue} from 'recoil';
 
 const SignIn =()=>{
     const navigate = useNavigate();
-    const {loggedIn} = useContext(UserContext);
+    const loggedIn = useRecoilValue(isLoggedInState)
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(true);
     const [password, setPassword] = useState('');
@@ -19,7 +20,7 @@ const SignIn =()=>{
         if(loggedIn){
             navigate('/todo', {replace: true});
         }
-    },[loggedIn, navigate]);
+    },[loggedIn]);
 
     const onChangeEmail = useCallback((e)=>{
         let value = e.target.value;
@@ -70,7 +71,7 @@ const SignIn =()=>{
             alert('잠시후 다시 시도해 주세요.')
         }
 
-    },[email, password, navigate]);
+    },[email, password]);
 
     return (
         <AppLayout type={"form"}>
