@@ -1,36 +1,34 @@
-import axios from "axios";
-import { useCallback, useEffect, useContext } from "react";
+import { useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
-import { backURL } from "../../config";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
-import { TodoContext } from "../../context/TodoProvider";
 import { useRecoilValue} from 'recoil';
 import { isLoggedInState } from "../../atoms/userAtoms";
+import { fetchTodoQuery } from "../../atoms/todoAtoms";
+
+const Todos = ()=>{
+    const todo = useRecoilValue(fetchTodoQuery);
+
+    if(todo.error){
+        alert(`error : ${todo.error.message}`);
+        return ;
+    }
+
+    return (
+        <>
+        {todo&&todo.map((v,i)=>(<TodoList data={v} key={i}/>))}
+        </>
+    )
+}
   
 
 const Todo = ()=>{
     const navigate = useNavigate();
     const loggedIn = useRecoilValue(isLoggedInState)
-    const {todo, loadTodo} = useContext(TodoContext)
-
-
-    const getTodos = useCallback(async()=>{
-        console.log('gettodo');
-        try {
-            const response = await axios.get(`${backURL}/todos`);
-            loadTodo(response.data);
-        } catch (error) {
-            console.log('에러', error);
-            alert('잠시후 다시 시도해 주세요.')
-        }
-    },[])
 
     useEffect(()=>{
-        if(loggedIn){
-            getTodos()
-        }else{
+        if(!loggedIn){
             navigate('/signin', {replace: true});
         }
     },[loggedIn]);
@@ -43,7 +41,9 @@ const Todo = ()=>{
                     <TodoInput/>
                 </div>
                 <div className="box_bottom">
-                    {todo&&todo.map((v,i)=>(<TodoList data={v} key={i}/>))}
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Todos/>
+                    </Suspense>
                 </div>
             </div>
         </AppLayout>
