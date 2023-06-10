@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { todoListState } from "../../atoms/todoAtoms";
 import { backURL } from "../../config";
-import { TodoContext } from "../../context/TodoProvider";
 import { CheckBox, Icon, Input } from "../../Styles";
 import { List, Text } from "./style";
+import { useRecoilState} from 'recoil';
 
 const TodoList =({ data }) =>{
-    const { deleteTodo, updateTodo } = useContext(TodoContext);
+    const [todoList, setTodoList] = useRecoilState(todoListState);
     const [isEdit, setIsEdit] = useState(false);
     const [todo, setTodo] = useState(data.todo);
     const [checked, setChecked] = useState(false);
@@ -15,19 +16,20 @@ const TodoList =({ data }) =>{
         setChecked(data.isCompleted)
     },[data.isCompleted])
 
-    const onClickDelete = useCallback(async(e)=>{
+    const onClickDelete = async(e)=>{
         const id = Number(e.target.value);
         try {
             const response = await axios.delete(`${backURL}/todos/${id}`);
-            deleteTodo(id);
+            const newList = todoList.filter((item) => item.id !== Number(id))
+            setTodoList(newList)
         } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
         }
        
-    },[deleteTodo]);
+    };
 
-    const onSubmit = useCallback(async(e)=>{
+    const onSubmit = async(e)=>{
         e.preventDefault();
         const id = Number(e.target.id);
 
@@ -37,16 +39,17 @@ const TodoList =({ data }) =>{
         }
         try {
             const response = await axios.put(`${backURL}/todos/${id}`,sendData);
-            updateTodo(response.data);
+            const newList = todoList.map((item) => item.id === response.data.id ? response.data : item)
+            setTodoList(newList)
             setIsEdit((prev=>!prev));
         } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
         }
         
-    },[todo, data.isCompleted, updateTodo])
+    }
 
-    const onCheckUpdate = useCallback(async(e)=>{
+    const onCheckUpdate = async(e)=>{
         const id = Number(e.target.id.split('_')[1]);
 
         const sendData ={
@@ -57,14 +60,16 @@ const TodoList =({ data }) =>{
         
         try {
             const response = await axios.put(`${backURL}/todos/${id}`,sendData);
-            updateTodo(response.data);
+            // updateTodo(response.data);
+            const newList = todoList.map((item) => item.id === response.data.id ? response.data : item)
+            setTodoList(newList)
             setChecked((prev)=>(!prev));
         } catch (error) {
             console.log('에러', error);
             alert(error.response.data.message || '잠시후 다시 시도해 주세요.')
         }
 
-    },[data.todo, data.isCompleted, updateTodo])
+    }
 
     const onChangeInput = useCallback((e)=>{
         setTodo(e.target.value);
