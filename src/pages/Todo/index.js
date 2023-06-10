@@ -1,31 +1,17 @@
-import { useEffect, Suspense } from "react";
+import { useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import TodoInput from "../../components/TodoInput";
 import TodoList from "../../components/TodoList";
 import { useRecoilValue} from 'recoil';
 import { isLoggedInState } from "../../atoms/userAtoms";
-import { fetchTodoQuery } from "../../atoms/todoAtoms";
+import { todoListState } from "../../atoms/todoAtoms";
 
-const Todos = ()=>{
-    const todo = useRecoilValue(fetchTodoQuery);
-
-    if(todo.error){
-        alert(`error : ${todo.error.message}`);
-        return ;
-    }
-
-    return (
-        <>
-        {todo&&todo.map((v,i)=>(<TodoList data={v} key={i}/>))}
-        </>
-    )
-}
-  
 
 const Todo = ()=>{
     const navigate = useNavigate();
     const loggedIn = useRecoilValue(isLoggedInState)
+    const todo = useRecoilValue(todoListState);
 
     useEffect(()=>{
         if(!loggedIn){
@@ -41,9 +27,7 @@ const Todo = ()=>{
                     <TodoInput/>
                 </div>
                 <div className="box_bottom">
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <Todos/>
-                    </Suspense>
+                    {todo&&todo.map((v,i)=>(<TodoList data={v} key={i}/>))}
                 </div>
             </div>
         </AppLayout>
