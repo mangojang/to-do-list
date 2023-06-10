@@ -51,7 +51,7 @@ npm start
 - react-router
 - Axios
 - Styled Components
-- Context API
+- recoil
 
 백엔드는 [링크](https://github.com/walking-sunset/selection-task) 참고 바랍니다.
 
