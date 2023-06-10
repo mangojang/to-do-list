@@ -6,11 +6,12 @@ import { Button, FormInputRow, Input } from "../../Styles";
 import { useNavigate } from "react-router-dom";
 import { backURL } from "../../config";
 import { isLoggedInState } from "../../atoms/userAtoms";
-import { useRecoilValue} from 'recoil';
+import { useRecoilValue, useRecoilState} from 'recoil';
 
 const SignIn =()=>{
     const navigate = useNavigate();
-    const loggedIn = useRecoilValue(isLoggedInState)
+    // const loggedIn = useRecoilValue(isLoggedInState)
+    const [loggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState)
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(true);
     const [password, setPassword] = useState('');
@@ -65,6 +66,7 @@ const SignIn =()=>{
             const response = await axios.post(`${backURL}/auth/signin`, data);
             const token = response.data.access_token;
             localStorage.setItem("todo", token);
+            setIsLoggedIn(true)
             navigate('/todo')
         } catch (error) {
             console.log('에러', error);
